@@ -1,0 +1,7 @@
+These are the requirements you need to run this project\
+streamlit==1.22.0    #these are all boiler plate stuff for now
+flask==2.2.5           
+PyPDF2==3.0.1
+scikit-learn==1.3.0
+nltk==3.8.1
+mysql-connector-python==8.0.33
