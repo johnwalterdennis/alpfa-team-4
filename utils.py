@@ -22,11 +22,6 @@ def parse_resume(filepath):
             text += reader.pages[page_num].extract_text()
         return text
 
-# Use TF-IDF to retrieve keywords from user resume
-# def extract_keywords(resume_text, job_relevant_keywords):
-#     TFIDF = TfidfVectorizer(stop_words='english', max_features=10)
-#     keywords = TFIDF.fit_transform([resume_text])
-#     return TFIDF.get_feature_names_out()
 
 # Can change the max_features to fit our testing desire
 def extract_keywords(resume_text, job_relevant_keywords):
