@@ -1,5 +1,12 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+# def extract_keywords(text, max_features=20):
+#     vectorizer = TfidfVectorizer(stop_words='english', max_features=max_features)
+#     tfidf_matrix = vectorizer.fit_transform([text])
+#     feature_array = vectorizer.get_feature_names_out()
+#     return feature_array
+
+
 def extract_keywords(text, job_relevant_keywords, max_features):
     vectorizer = TfidfVectorizer(stop_words='english', max_features=max_features) #this initialized the vectorizer to ignore stop words in english like "is", "like"
     #it also sets the max_features(keywords) as the number passed in at the method call
