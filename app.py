@@ -11,8 +11,42 @@ job_relevant_keywords = [
     "swift"
 ]
 
+<<<<<<< HEAD
 
 st.title('Candidate-Sponsor Match System')
+=======
+# UI PART
+st.title('Candidate->Sponsor Match System')
+st.write("JOB ID : 102314")
+st.write("Software Developer Role")
+st.markdown("""
+### Minimum Qualifications:
+- Currently enrolled in an Associate, Bachelor's, or Master's degree program or post-secondary training in software development or a related technical field.
+- Experience in software development.
+- Experience coding in one or more of C, C++, Java, JavaScript, Python, or similar.
+
+### Preferred Qualifications:
+- Experience in web application development, Unix/Linux environments, mobile development, machine learning, and more.
+- Experience with data structures and algorithms.
+- Full-time availability for a minimum of 6 months.
+- Ability to communicate fluently in English for complex technical discussions.
+
+### About the Job:
+As a Software Engineering Intern, you'll work on Google's core products and services, solving complex technical problems and collaborating on scalable solutions.
+
+### Responsibilities:
+- Develop scripts to automate routine tasks.
+- Collaborate with peers and teams to innovate and solve problems.
+- Apply knowledge gained in computer science to real-world challenges.
+""")
+
+
+
+
+
+
+# 
+>>>>>>> 08e76e3574905ada11e32b62785f7de018ec5e01
 
 # Testing to hold resumes here
 RESUME_FOLDER = 'uploads'
@@ -25,7 +59,20 @@ st.header('Upload Your Resume')
 question1 = st.text_area("What motivates you")
 question2 = st.text_area("What are your hobbies")
 question3 = st.text_area("Describe something challenging you have overcome")
-uploaded_resume = st.file_uploader('Upload your resume (PDF)', type='pdf')
+uploaded_resume = st.file_uploader('Upload your resume (PDF) Limit: 5mb', type=['pdf', 'docx'])
+
+# Limiting File size to 5MB function
+# 5 MB in bytes
+MAX_FILE_SIZE = 5 * 1024 * 1024
+
+if uploaded_resume is not None:
+    # Check file size
+    if uploaded_resume.size > MAX_FILE_SIZE:
+        st.error("File size exceeds the 5 MB limit. Please upload a smaller file.")
+    else:
+        st.success("File uploaded successfully!")
+        st.write(f"File type: {uploaded_resume.type}")
+        st.write(f"File size: {uploaded_resume.size / 1024:.2f} KB")
 
 if st.button('Submit'):
     if uploaded_resume is not None:
