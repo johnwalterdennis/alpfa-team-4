@@ -1,4 +1,5 @@
 import os
+from parse_resume import parse_resume
 from utils import parse_resume, extract_keywords, match_jobs, pre_process
 import streamlit as st
 
@@ -11,7 +12,7 @@ job_relevant_keywords = [
 ]
 
 
-st.title('Candidate->Sponsor Match System')
+st.title('Candidate-Sponsor Match System')
 
 # Testing to hold resumes here
 RESUME_FOLDER = 'uploads'
@@ -39,25 +40,26 @@ if st.button('Submit'):
 ##################################
 
     parsed_text = parse_resume(filename)
-    cleaned_text = pre_process(parsed_text)
-
-    # st.text_area('Parsed Resume Text', parsed_text)
-    st.text_area('Cleaned Text', cleaned_text)
-
-    keywords = extract_keywords(cleaned_text, job_relevant_keywords)
-    st.write("Extracted Keywords: ", keywords)
-
-    st.header('Job Matches')
-
-    # Test jobs until we connect with database
-    jobs = [
-        {"title": "Software Engineer", "description": "Looking for someone with Python, Flask, SQL, Java, React"},
-        {"title": "Data Scientist", "description": "C#, MongoDB, PostgreSQL, Java"}
-    ]
-
-    matched_jobs = match_jobs(keywords, jobs, job_relevant_keywords)
+    # cleaned_text = pre_process(parsed_text)
 
 
-    for job, score in matched_jobs:
-        st.write(f'Job: {job["title"]}, Match Score: {score}')
+    st.text_area('Parsed Resume Text: ', parsed_text)
+    # st.text_area('Cleaned Text', cleaned_text)
+
+    # keywords = extract_keywords(cleaned_text, job_relevant_keywords)
+    # st.write("Extracted Keywords: ", keywords)
+
+    # st.header('Job Matches')
+
+    # # Test jobs until we connect with database
+    # jobs = [
+    #     {"title": "Software Engineer", "description": "Looking for someone with Python, Flask, SQL, Java, React"},
+    #     {"title": "Data Scientist", "description": "C#, MongoDB, PostgreSQL, Java"}
+    # ]
+
+    # matched_jobs = match_jobs(keywords, jobs, job_relevant_keywords)
+
+
+    # for job, score in matched_jobs:
+    #     st.write(f'Job: {job["title"]}, Match Score: {score}')
 
