@@ -11,7 +11,7 @@ job_relevant_keywords = [
 ]
 
 
-st.title('Job Match System')
+st.title('Candidate->Sponsor Match System')
 
 # Testing to hold resumes here
 RESUME_FOLDER = 'uploads'
@@ -21,17 +21,22 @@ if not os.path.exists(RESUME_FOLDER):
 
 # Upload resume ui
 st.header('Upload Your Resume')
-uploaded_resume = st.file_uploader('Upload your resume', type='pdf')
+question1 = st.text_area("What motivates you")
+question2 = st.text_area("What are your hobbies")
+question3 = st.text_area("Describe something challenging you have overcome")
+uploaded_resume = st.file_uploader('Upload your resume (PDF)', type='pdf')
+
+if st.button('Submit'):
+    if uploaded_resume is not None:
+        filename = os.path.join(RESUME_FOLDER, uploaded_resume.name)
+        with open(filename, "wb") as destination:
+            destination.write(uploaded_resume.getbuffer())
+
 
 # Reads the resume and extracts the keywords
 ###################################
 # NEED TO MODIFY KEYWORD EXTRACTION
-###################################
-if uploaded_resume is not None:
-    filename = os.path.join(RESUME_FOLDER, uploaded_resume.name)
-    with open(filename, "wb") as destination:
-        destination.write(uploaded_resume.getbuffer())
-
+##################################
 
     parsed_text = parse_resume(filename)
     cleaned_text = pre_process(parsed_text)
