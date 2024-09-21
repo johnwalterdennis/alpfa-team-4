@@ -1,13 +1,16 @@
 import os
-from utils import parse_resume, extract_keywords, match_jobs, pre_process
+
+from nltk.metrics.aline import similarity_matrix
+
+from utils import parse_resume, extract_keywords, pre_process, match_jobs
 import streamlit as st
 
 job_relevant_keywords = [
     "python", "machine learning", "data analysis", "flask", "django", "sql",
-    "cloud", "api", "tensorflow", "pandas", "numpy","java","c#", "c++", "c", "linux","mysql", "postgresql",
+    "cloud", "api", "tensorflow", "numpy","java","c#", "c++", "c", "linux","mysql", "postgresql",
     "rust","javascript", "ruby", "go", "typescript", "php", "html" "css", "node", "js",
     "git", "github", "spring", "pandas", "nosql", "mongodb", "aws", "azure", "nlp", "kotlin",
-    "swift"
+    "swift", "golang"
 ]
 
 # UI PART
@@ -34,13 +37,6 @@ As a Software Engineering Intern, you'll work on Google's core products and serv
 - Collaborate with peers and teams to innovate and solve problems.
 - Apply knowledge gained in computer science to real-world challenges.
 """)
-
-
-
-
-
-
-#
 
 # Testing to hold resumes here
 RESUME_FOLDER = 'uploads'
@@ -89,14 +85,12 @@ if st.button('Submit'):
         st.write("Extracted Keywords: ", keywords)
 
         st.header('Job Matches')
-        # Test jobs until we connect with database
-        jobs = [
-            {"title": "Software Engineer", "description": "Looking for someone with Python, Flask, SQL, Java, React"},
-            {"title": "Data Scientist", "description": "C#, MongoDB, PostgreSQL, Java"}
-        ]
+        # Test Skill list
+        job_name = "Software Developer"
+        jobs_skills = ["java", "C#", "Spring", "Javascript", "Linux"]
 
-        matched_jobs = match_jobs(keywords, jobs, job_relevant_keywords)
+        # Returns the top list of skills that are matched from the job and resume
+        matched_skills = match_jobs(keywords, jobs_skills, 10, job_relevant_keywords)
+        st.write(list(dict.fromkeys(matched_skills)))
 
-        for job, score in matched_jobs:
-            st.write(f'Job: {job["title"]}, Match Score: {score}')
 
