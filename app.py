@@ -1,6 +1,8 @@
 import os
 from parse_resume import parse_resume
-from utils import parse_resume, extract_keywords, match_jobs, pre_process
+from keyword_extraction import extract_keywords
+# from utils import match_jobs, pre_process
+from matching_algorithm import match_jobs
 import streamlit as st
 
 job_relevant_keywords = [
@@ -11,10 +13,6 @@ job_relevant_keywords = [
     "swift"
 ]
 
-<<<<<<< HEAD
-
-st.title('Candidate-Sponsor Match System')
-=======
 # UI PART
 st.title('Candidate->Sponsor Match System')
 st.write("JOB ID : 102314")
@@ -40,13 +38,6 @@ As a Software Engineering Intern, you'll work on Google's core products and serv
 - Apply knowledge gained in computer science to real-world challenges.
 """)
 
-
-
-
-
-
-# 
->>>>>>> 08e76e3574905ada11e32b62785f7de018ec5e01
 
 # Testing to hold resumes here
 RESUME_FOLDER = 'uploads'
@@ -90,7 +81,9 @@ if st.button('Submit'):
     # cleaned_text = pre_process(parsed_text)
 
 
+    jobs = ["math", "science","programming", "python", "java"]
     st.text_area('Parsed Resume Text: ', parsed_text)
+    st.text_area('Extracted Keywords', extract_keywords(parsed_text, jobs, 100))
     # st.text_area('Cleaned Text', cleaned_text)
 
     # keywords = extract_keywords(cleaned_text, job_relevant_keywords)
@@ -99,10 +92,6 @@ if st.button('Submit'):
     # st.header('Job Matches')
 
     # # Test jobs until we connect with database
-    # jobs = [
-    #     {"title": "Software Engineer", "description": "Looking for someone with Python, Flask, SQL, Java, React"},
-    #     {"title": "Data Scientist", "description": "C#, MongoDB, PostgreSQL, Java"}
-    # ]
 
     # matched_jobs = match_jobs(keywords, jobs, job_relevant_keywords)
 
