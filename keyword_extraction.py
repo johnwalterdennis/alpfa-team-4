@@ -7,7 +7,7 @@ def extract_native_keywords(text, max_features=50):
     return feature_array
 
 
-def extract_keywords(text, job_relevant_keywords, max_features):
+def compute_similar_keywords(text, job_relevant_keywords, max_features):
     vectorizer = TfidfVectorizer(stop_words='english', max_features=max_features) #this initialized the vectorizer to ignore stop words in english like "is", "like"
     #it also sets the max_features(keywords) as the number passed in at the method call
     response = vectorizer.fit_transform([text]) #this is when the vectorizer reads the text, it is read in as a list[] because the method expect a bunch of pages

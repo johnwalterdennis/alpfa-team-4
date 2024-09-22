@@ -41,6 +41,7 @@ def job_posting():
             title = st.text_input("Job Title")
             description = st.text_area("what is the job description")
             personality = st.text_area("What kind of personality do you want for this role")
+            application_link = st.text_area("Application link")
             submit_job = st.form_submit_button("Post Job")
 
         if submit_job:
@@ -48,9 +49,10 @@ def job_posting():
             keyword_list2 = extract_native_keywords(personality, 20)
             keywords = [*keyword_list1, *keyword_list2]
             print(keywords)
-            job_posting_id = insert_jobs(title, description, sponsor_id, keywords, personality)
+            job_posting_id = insert_jobs(title, description, sponsor_id, keywords, personality, application_link)
             if job_posting_id:
                 st.success("Job posting created successfully!")
+                
             else:
                 st.error("Failed to create job posting.")
 

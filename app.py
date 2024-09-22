@@ -1,20 +1,12 @@
 import os
 from parse_resume import parse_resume
-from keyword_extraction import extract_keywords
+from keyword_extraction import compute_similar_keywords, extract_native_keywords
 # from utils import match_jobs, pre_process
-from matching_algorithm import match_jobs
-from database import insert_candidate, create_connection, insert_candidate_keywords
+# from matching_algorithm import match_jobs
+from database import insert_candidate, create_connection, insert_candidate_keywords, get_all_job_postings, get_job_application_by_id
+from matching_algorithm import get_match
 import streamlit as st
 
-job_relevant_keywords = [
-    "python", "machine learning", "data analysis", "flask", "django", "sql",
-    "cloud", "api", "tensorflow", "pandas", "numpy","java","c#", "c++", "c", "linux","mysql", "postgresql",
-    "rust","javascript", "ruby", "go", "typescript", "php", "html" "css", "node", "js",
-    "git", "github", "spring", "pandas", "nosql", "mongodb", "aws", "azure", "nlp", "kotlin",
-    "swift", "math", "science","programming", "python", "java", "university"
-]
-
-# UI PART
 st.title('Candidate->Sponsor Match System')
 
 # Testing to hold resumes here
@@ -52,32 +44,42 @@ if st.button('Submit'):
         with open(filename, "wb") as destination:
             destination.write(uploaded_resume.getbuffer())
 
-
-# Reads the resume and extracts the keywords
-###################################
-# NEED TO MODIFY KEYWORD EXTRACTION
-##################################
-
     parsed_text = parse_resume(filename)
-    # cleaned_text = pre_process(parsed_text)
-
-
-    jobs = [
-    "python", "machine learning", "data analysis", "flask", "django", "sql",
-    "cloud", "api", "tensorflow", "pandas", "numpy","java","c#", "c++", "c", "linux","mysql", "postgresql",
-    "rust","javascript", "ruby", "go", "typescript", "php", "html" "css", "node", "js",
-    "git", "github", "spring", "pandas", "nosql", "mongodb", "aws", "azure", "nlp", "kotlin",
-    "swift", "math", "science","programming", "python", "java", "happy", "learn"
-]
-    st.text_area('Parsed Resume Text: ', parsed_text)
-    # keywords = extract_keywords(parsed_text, 700)
-    # print(keywords)
-
-    keywords = extract_keywords(parsed_text, jobs, 100)
-    st.text_area('Extracted Keywords', keywords) 
+    jobs = get_all_job_postings()
     userCandidateId = insert_candidate(userName, userEmail, userLocation, parsed_text, 1, userMotivation, userHobbies, userChallanges)
-    print(userCandidateId)
-    insert_candidate_keywords(userCandidateId, keywords)
+    motivation_keywords = extract_native_keywords(userMotivation, 20) 
+    hobby_keywords = extract_native_keywords(userHobbies, 20) 
+    challenges_keywords = extract_native_keywords(userChallanges, 20)
+    resume_keywords = extract_native_keywords(parsed_text, 100) 
+    all_keywords = [*motivation_keywords, *hobby_keywords, *challenges_keywords, *resume_keywords]
+    # insert_candidate_keywords(userCandidateId, keywords, 0)
+    print(all_keywords)
+    result_string = ' '.join(all_keywords)
+    similar_keywords = {}
+    for job in jobs:
+        similar_keywords[job] = compute_similar_keywords(result_string, jobs[job], 100)
+    match = get_match(similar_keywords)
+    job_match = get_job_application_by_id(match)
+    title  = job_match[0]['title']
+    application_link = job_match[0]['application_link']
+    if job_match:
+        st.title("Matched Jobs for You")
+        st.header(f"{title} at {application_link}")
+        # st.write(f"Candidate Match Score: ")
+
+
+
+# def process_candidate(name, email, resume_file_path, max_features):
+    # Existing code to extract keywords and insert candidate data
+    # ...
+
+    # Step 6: Match candidate to jobs
+    # matches = match_candidate_to_jobs(candidate_id, candidate_keywords)
+
+    # Step 7: Display matches to the candidate
+    # for match in matches:
+    #     print(f"Job Title: {match['title']}, Company: {match['company']}, Similarity: {match['similarity']}")
+
 
     # st.text_area('Cleaned Text', cleaned_text)
 

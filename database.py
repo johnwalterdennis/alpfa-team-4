@@ -103,7 +103,7 @@ def insert_sponsor(name, email, bio, keywords, password):
         connection.close
 
 
-def insert_jobs(title, description, sponsor_id, keywords, personality):
+def insert_jobs(title, description, sponsor_id, keywords, personality, application_link):
     connection = create_connection()
     if connection is None:
         return False
@@ -115,10 +115,10 @@ def insert_jobs(title, description, sponsor_id, keywords, personality):
     try:
         with connection.cursor() as cursor:
             sql = """
-            INSERT INTO Job_postings (title, description, sponsor_id, keywords, personality)
-            VALUES ( %s, %s, %s, %s, %s)
+            INSERT INTO Job_postings (title, description, sponsor_id, keywords, personality, application_link)
+            VALUES ( %s, %s, %s, %s, %s, %s)
             """
-            cursor.execute(sql, (title, description, sponsor_id, keyword_str, personality))
+            cursor.execute(sql, (title, description, sponsor_id, keyword_str, personality, application_link))
             connection.commit()
             job_posting_id = cursor.lastrowid
             return job_posting_id
@@ -127,4 +127,63 @@ def insert_jobs(title, description, sponsor_id, keywords, personality):
         return None
     finally: 
         connection.close
+
+def get_all_job_postings():
+    """
+    Retrieves all job postings from the database and returns a dictionary
+    with job IDs as keys and lists of keywords as values.
+
+    Returns:
+        dict: A dictionary where each key is a job ID, and each value is a list of keywords.
+    """
+    connection = create_connection()
+    if connection is None:
+        return False
+
+    try:
+        with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            # Select only the necessary fields
+            sql = "SELECT id, keywords FROM Job_postings"
+            cursor.execute(sql)
+            job_postings = cursor.fetchall()
+
+            # Initialize the dictionary to hold job IDs and keywords
+            job_keywords_dict = {}
+
+            for job in job_postings:
+                job_id = job['id']
+                keywords_str = job['keywords']
+                if keywords_str:
+                    # Assuming keywords are stored as a comma-separated string
+                    keywords = [kw.strip() for kw in keywords_str.split(',')]
+                else:
+                    keywords = []
+                job_keywords_dict[job_id] = keywords
+
+            return job_keywords_dict
+    except pymysql.MySQLError as e:
+        print(f"Error retrieving job postings: {e}")
+        return {}
+    finally:
+        connection.close()
+
+def get_job_application_by_id(id):
+    connection = create_connection()
+    if connection is None:
+        return None
+
+    try:
+        with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            sql = """
+            SELECT title, application_link FROM Job_postings
+            WHERE id = %s
+            """
+            cursor.execute(sql, (id))
+            application = cursor.fetchall()
+            return application
+    except pymysql.MySQLError as e:
+        print(f"Error retrieving job application: {e}")
+        return None
+    finally:
+        connection.close()
         
