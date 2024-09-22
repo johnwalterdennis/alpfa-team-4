@@ -30,21 +30,20 @@ def create_connection():
         print(f"Could not connect to MySQL: {e}")
         return None
 
-create_connection()
-def insert_candidate(name, email, location, resume_text, keywords, sentiment_score, motivation, hobbies, challenges):
+def insert_candidate(name, email, location, resume_text, sentiment_score, motivation, hobbies, challenges):
     connection = create_connection()
     if connection is None:
         return print(False)
     try:
         with connection.cursor() as cursor:#using a cursor object is also best practice
             sql = """
-            INSERT INTO Candidates (name, email, location, resume_text, keywords, sentiment_score, motivation, hobbies, challenges)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO Candidates (name, email, location, resume_text, sentiment_score, motivation, hobbies, challenges)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """
             #apparently the %s place holder is good practice
             #this sql code block will be executed at query execution at cursor.execution(sql, values %s)
-            print(f"Inserting: {name}, {email}, {location}, {resume_text}, {keywords}, {sentiment_score}, {motivation}, {hobbies}, {challenges}")
-            cursor.execute(sql, (name, email, location, resume_text, keywords, sentiment_score, motivation, hobbies, challenges))#feeding the called parameters into the sql query 
+            # print(f"Inserting: {name}, {email}, {location}, {resume_text}, {sentiment_score}, {motivation}, {hobbies}, {challenges}")
+            cursor.execute(sql, (name, email, location, resume_text, sentiment_score, motivation, hobbies, challenges))#feeding the called parameters into the sql query 
             connection.commit() #commit to db
             candidate_id = cursor.lastrowid #nice function that give us the id of the most recent entry
             return candidate_id
@@ -53,3 +52,79 @@ def insert_candidate(name, email, location, resume_text, keywords, sentiment_sco
         return None
     finally:
         connection.close()
+
+def insert_candidate_keywords(candidate_id, keywords_scores):
+    """
+    Inserts keywords and their scores for a candidate.
+
+    Args:
+        candidate_id (int): The ID of the candidate.
+        keywords_scores (list): A list of tuples (keyword, score).
+    """
+    connection = create_connection()
+    if connection is None:
+        return False
+
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+            INSERT INTO Candidate_keywords (candidate_id, keyword, score)
+            VALUES (%s, %s, %s)
+            """
+            data = [(candidate_id, keyword, score) for (keyword, score) in keywords_scores]
+            cursor.executemany(sql, data)
+            connection.commit()
+            return True
+    except pymysql.MySQLError as e:
+        print(f"Error inserting candidate keywords: {e}")
+        return False
+    finally:
+        connection.close()
+
+def insert_sponsor(name, email, bio, keywords, password):
+    connection = create_connection()
+    if connection is None:
+        return False
+    
+    try: 
+        with connection.cursor() as cursor:
+            sql = """
+            INSERT INTO Sponsors (name, email, bio, keywords, password)
+            VALUES (%s, %s, %s, %s, %s)
+            """
+            cursor.execute(sql, (name, email, bio, keywords, password))
+            connection.commit()
+            sponsor_id = cursor.lastrowid
+            return sponsor_id
+    except pymysql.MySQLError as e:
+        print(f"Error inserting sponsor: {e}")
+        return None
+    finally: 
+        connection.close
+
+
+def insert_jobs(title, description, sponsor_id, keywords, personality):
+    connection = create_connection()
+    if connection is None:
+        return False
+    
+    keyword_str = ','.join(map(str, keywords))
+    
+    print(keyword_str)
+
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+            INSERT INTO Job_postings (title, description, sponsor_id, keywords, personality)
+            VALUES ( %s, %s, %s, %s, %s)
+            """
+            cursor.execute(sql, (title, description, sponsor_id, keyword_str, personality))
+            connection.commit()
+            job_posting_id = cursor.lastrowid
+            return job_posting_id
+    except pymysql.MySQLError as e:
+        print(f"Error inserting sponsor: {e}")
+        return None
+    finally: 
+        connection.close
+        
