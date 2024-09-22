@@ -1,5 +1,6 @@
 import streamlit as st
-from utils import parse_resume, extract_keywords, match_jobs, pre_process
+from utils import pre_process
+from keyword_extraction import extract_keywords
 
 
 job_relevant_keywords = [
