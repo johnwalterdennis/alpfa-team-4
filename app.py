@@ -1,10 +1,9 @@
 import streamlit as st
+from matching_algorithm import match_jobs
+from database import insert_candidate, create_connection
 import os
 from parse_resume import parse_resume
 from keyword_extraction import extract_keywords
-# from utils import match_jobs, pre_process
-from matching_algorithm import match_jobs
-from database import insert_candidate, create_connection
 
 st.write("# Welcome to ALPFA matching page 👋")
 job_relevant_keywords = [
