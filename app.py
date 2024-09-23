@@ -53,7 +53,7 @@ if st.button('Submit'):
     resume_keywords = extract_native_keywords(parsed_text, 100) 
     all_keywords = [*motivation_keywords, *hobby_keywords, *challenges_keywords, *resume_keywords]
     # insert_candidate_keywords(userCandidateId, keywords, 0)
-    print(all_keywords)
+    # print(all_keywords)
     result_string = ' '.join(all_keywords)
     similar_keywords = {}
     for job in jobs:
