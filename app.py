@@ -17,16 +17,15 @@ if not os.path.exists(RESUME_FOLDER):
 
 # Upload resume ui
 st.header('Upload Your Resume')
+userName= st.text_area("What is you name")
+# userEmail = st.text_area("What is your email")
+userEmail = "johndoe@gmail.com"
+# userLocation = st.text_area("Where are you based")
+userLocation = "Atlanta GA"
+userMotivation = st.text_area("What motivates you")
+userHobbies = st.text_area("What are your hobbies")
+userChallanges = st.text_area("Describe something challenging you have overcome")
 uploaded_resume = st.file_uploader('Upload your resume (PDF) Limit: 5mb', type=['pdf', 'docx'])
-userName= st.text_area("We encourage employees to take ownership of their projects and outcomes. Can you describe a time when you took the lead on a project and drove it to success?")
-userMotivation = st.text_area("we put the client at the center of everything. How do you approach understanding and meeting the needs of clients?")
-
-
-
-userEmail = "yes"
-userLocation ="Atlanta"
-userHobbies ="sports"
-userChallanges = "done"
 # Limiting File size to 5MB function
 # 5 MB in bytes
 MAX_FILE_SIZE = 5 * 1024 * 1024
@@ -68,34 +67,6 @@ if st.button('Submit'):
     if job_match:
         st.title("Matched Jobs for You")
         st.header(f"{title} at {application_link}")
-        # st.write(f"Candidate Match Score: ")
-
-
-
-# def process_candidate(name, email, resume_file_path, max_features):
-    # Existing code to extract keywords and insert candidate data
-    # ...
-
-    # Step 6: Match candidate to jobs
-    # matches = match_candidate_to_jobs(candidate_id, candidate_keywords)
-
-    # Step 7: Display matches to the candidate
-    # for match in matches:
-    #     print(f"Job Title: {match['title']}, Company: {match['company']}, Similarity: {match['similarity']}")
-
-
-    # st.text_area('Cleaned Text', cleaned_text)
-
-    # keywords = extract_keywords(cleaned_text, job_relevant_keywords)
-    # st.write("Extracted Keywords: ", keywords)
-
-    # st.header('Job Matches')
-
-    # # Test jobs until we connect with database
-
-    # matched_jobs = match_jobs(keywords, jobs, job_relevant_keywords)
-
-
-    # for job, score in matched_jobs:
-    #     st.write(f'Job: {job["title"]}, Match Score: {score}')
+        st.write(f"Candidate Match Score: ")
+        st.progress(90 / 100)
 
