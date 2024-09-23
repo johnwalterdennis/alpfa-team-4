@@ -18,7 +18,7 @@ def hr_candidate_viewer():
     st.title("HR Candidate Viewer")
 
     # Job ID input
-    job_id = st.text_input("Enter Job ID")
+    job_id = st.text_input("Enter Job D")
 
     if job_id:
         st.subheader(f"Potential Candidates for Job ID: {job_id}")
