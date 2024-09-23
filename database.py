@@ -41,7 +41,7 @@ def insert_candidate(name, email, location, resume_text, keywords, sentiment_sco
             INSERT INTO Candidates (name, email, location, resume_text, keywords, sentiment_score, motivation, hobbies, challenges)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
-            #apparently the %s place holder is good practice
+            #apparently the %s placeholder is good practice
             #this sql code block will be executed at query execution at cursor.execution(sql, values %s)
             print(f"Inserting: {name}, {email}, {location}, {resume_text}, {keywords}, {sentiment_score}, {motivation}, {hobbies}, {challenges}")
             cursor.execute(sql, (name, email, location, resume_text, keywords, sentiment_score, motivation, hobbies, challenges))#feeding the called parameters into the sql query
