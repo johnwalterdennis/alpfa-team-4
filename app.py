@@ -17,14 +17,16 @@ if not os.path.exists(RESUME_FOLDER):
 
 # Upload resume ui
 st.header('Upload Your Resume')
-userName= st.text_area("We encourage employees to take ownership of their projects and outcomes. Can you describe a time when you took the lead on a project and drove it to success?")
-userEmail = st.text_area("How have you contributed to initiatives that have a positive impact on society, the environment, or your community?")
-userLocation = st.text_area("Describe a time when you encountered a significant challenge at work. How did you approach resolving it?")
-userMotivation = st.text_area("we put the client at the center of everything. How do you approach understanding and meeting the needs of clients?")
-userHobbies = st.text_area("Can you share an example of how you went above and beyond for a client or customer, and what was the outcome?")
-userChallanges = st.text_area("What motivates you to succeed in your professional life, and how does that align with the financial services industry?")
 uploaded_resume = st.file_uploader('Upload your resume (PDF) Limit: 5mb', type=['pdf', 'docx'])
+userName= st.text_area("We encourage employees to take ownership of their projects and outcomes. Can you describe a time when you took the lead on a project and drove it to success?")
+userMotivation = st.text_area("we put the client at the center of everything. How do you approach understanding and meeting the needs of clients?")
 
+
+
+userEmail = "yes"
+userLocation ="Atlanta"
+userHobbies ="sports"
+userChallanges = "done"
 # Limiting File size to 5MB function
 # 5 MB in bytes
 MAX_FILE_SIZE = 5 * 1024 * 1024
